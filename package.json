@@ -2,7 +2,7 @@
   "name": "cw-reperatur-service",
   "version": "1.0.0",
   "description": "Database projekt for Datenbanken",
-  "main": "index.js",
+  "main": "start.js",
   "scripts": {
     "start": "nodemon",
     "build": "tsc"
