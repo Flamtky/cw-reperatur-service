@@ -1,18 +1,49 @@
 import OracleDB from "oracledb";
 
-let connection: OracleDB.Connection;
+let connection: OracleDB.Pool;
+export class DatabaseQueries {
 
-export async function connect() {
-    OracleDB.initOracleClient({configDir: './api/databaseConfig'});
-    try{
-        console.log("Connecting to database...");
-        connection = await OracleDB.getConnection({ user: "cw", password: "cwrs", connectionString: "ORCL" });
-        console.log("Database connection established.");
-    }catch(err){
-        console.log(err);
+    constructor() { }
+
+    public static async getConnection(): Promise<OracleDB.Connection | undefined> {
+        return new Promise<OracleDB.Connection | undefined>(async (resolve, reject) => {
+            if (connection) {
+                return resolve(OracleDB.getConnection());
+            }
+            try {
+                OracleDB.initOracleClient({ configDir: './api/databaseConfig' });
+                console.log("Connecting to database...");
+                connection = await OracleDB.createPool({
+                    user: "cw",
+                    password: "cwrs",
+                    connectString: "ORCL"
+                });
+                console.log("Database connection established.");
+                resolve(OracleDB.getConnection());
+            } catch (err) {
+                console.log("Error connecting to database: \n" + err);
+                console.log("Are you connected to the VPN?");
+                reject(undefined)
+            }
+        });
+    }
+    public static async executeQuery(query: string): Promise<OracleDB.Result<unknown> | undefined> {
+        return new Promise<OracleDB.Result<unknown> | undefined>(async (resolve, reject) => {
+            try {
+                const connection = await this.getConnection();
+                if (connection === undefined) throw new Error("Connection is undefined");
+                const result = await connection?.execute(query);
+                resolve(result);
+            } catch (err) {
+                console.log(err);
+                reject(undefined);
+            }
+        });
+
     }
 
-    let result = await connection.execute("SELECT table_name FROM all_tables where owner = 'CW'");
-    console.log(result.rows);
 
 }
+
+export default DatabaseQueries;
+

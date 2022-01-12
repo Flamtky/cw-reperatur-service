@@ -2,7 +2,7 @@ import * as WebServer from "./util/WebServer";
 import HttpFileHandler from "./util/HttpFileHandler";
 import HttpRateLimiter from "./util/HttpRateLimiter";
 import apiHandler from "./api/apiHandler";
-import {connect} from "./api/DatabaseQueries"
+import DatabaseQueries from "./api/DatabaseQueries";
 
 function startWebServer() {
     WebServer.addHttpListener(new HttpRateLimiter(200, 5*60*1000, "/"));
@@ -13,7 +13,6 @@ function startWebServer() {
 
 function main() {
     startWebServer();
-    connect();
 }
 
 main();

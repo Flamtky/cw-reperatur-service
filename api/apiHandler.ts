@@ -1,6 +1,7 @@
 import { IncomingMessage, ServerResponse } from "http";
 import getErrorPage from "../util/ErrorDocument";
 import { CustomHandler, State } from "../util/HttpFileHandler";
+import  DatabaseQueries from "./DatabaseQueries";
 
 
 export default class ApiHandler implements CustomHandler {
@@ -11,7 +12,8 @@ export default class ApiHandler implements CustomHandler {
      * - Value: function = The function that handles the request (e.g. handlePath)
      */
     routes = new Map<string, Function>([
-        ["GET|/api/users", this.handleUsers]
+        ["GET|/api/users", this.handleUsers],
+        ["GET|/api/getalltables", this.getAllTables],
     ]);
 
     handle(req: IncomingMessage, res: ServerResponse, pathParts: string[], query: Map<string, string>, cookies: { [p: string]: string; }): State {
@@ -53,6 +55,21 @@ export default class ApiHandler implements CustomHandler {
         }; // TODO: Replace with real user from database
         res.writeHead(200, { "Content-Type": "application/json" });
         res.end(JSON.stringify(user));
+    }
+
+    async getAllTables(req: IncomingMessage, res: ServerResponse): Promise<void> {
+        let connection;
+        try {
+            const result = await DatabaseQueries.executeQuery("SELECT table_name FROM all_tables where owner = 'CW'");
+            if (result === undefined) throw new Error("Database result is undefined");
+            console.log("Result: " + result);
+            res.writeHead(200, { "Content-Type": "application/json" });
+            res.end(JSON.stringify(result.rows));
+        } catch (err) {
+            console.log(err);
+            res.writeHead(500, { "Content-Type": "text/html" });
+            res.end(getErrorPage(500));
+        }
     }
 
     // Check if the user is authenticated
