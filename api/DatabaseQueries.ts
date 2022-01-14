@@ -27,12 +27,13 @@ export class DatabaseQueries {
             }
         });
     }
-    public static async executeQuery(query: string): Promise<OracleDB.Result<unknown> | undefined> {
+    public static async executeQuery(query: string,values:any = {}): Promise<OracleDB.Result<unknown> | undefined> {
         return new Promise<OracleDB.Result<unknown> | undefined>(async (resolve, reject) => {
             try {
                 const connection = await this.getConnection();
                 if (connection === undefined) throw new Error("Connection is undefined");
-                const result = await connection?.execute(query);
+                const result = await connection?.execute(query,values);
+                connection.commit();
                 resolve(result);
             } catch (err) {
                 console.log(err);
