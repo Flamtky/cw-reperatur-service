@@ -26,8 +26,8 @@ app.get('/api/auftraege', async (req, res) => {
 app.post('/api/createauftrag', async (req, res) => {
     let auftrag = req.body;
     console.log(auftrag);
-    let result = await DatabaseQueries.executeQuery("INSERT INTO AUFTRAEGE (AUFTRAGSNUMMER, KUNDENID, PLZ, AUFTRAGSSTRASSE, AUFTRAGSHAUSNUMMER, MITARBEITERARBEITSZEIT, ARTDESAUFTRAGS, AUFTRAGSDATUM) VALUES (:AUFTRAGSNUMMER, :KUNDENID, :PLZ, :AUFTRAGSSTRASSE, :AUFTRAGSHAUSNUMMER, :MITARBEITERARBEITSZEIT, :ARTDESAUFTRAGS, :AUFTRAGSDATUM)",
-        { AUFTRAGSNUMMER: auftrag.AUFTRAGSNUMMER, KUNDENID: auftrag.KUNDENID, PLZ: auftrag.PLZ, AUFTRAGSSTRASSE: auftrag.AUFTRAGSSTRASSE, AUFTRAGSHAUSNUMMER: auftrag.AUFTRAGSHAUSNUMMER, MITARBEITERARBEITSZEIT: auftrag.MITARBEITERARBEITSZEIT, ARTDESAUFTRAGS: auftrag.ARTDESAUFTRAGS, AUFTRAGSDATUM: auftrag.AUFTRAGSDATUM });
+    let result = await DatabaseQueries.executeQuery("INSERT INTO AUFTRAEGE (AUFTRAGSNUMMER, KUNDENID, PLZ, AUFTRAGSSTRASSE, AUFTRAGSHAUSNUMMER, ARTDESAUFTRAGS, AUFTRAGSDATUM) VALUES (:AUFTRAGSNUMMER, :KUNDENID, :PLZ, :AUFTRAGSSTRASSE, :AUFTRAGSHAUSNUMMER, :MITARBEITERARBEITSZEIT, :ARTDESAUFTRAGS, :AUFTRAGSDATUM)",
+        { AUFTRAGSNUMMER: auftrag.AUFTRAGSNUMMER, KUNDENID: auftrag.KUNDENID, PLZ: auftrag.PLZ, AUFTRAGSSTRASSE: auftrag.AUFTRAGSSTRASSE, AUFTRAGSHAUSNUMMER: auftrag.AUFTRAGSHAUSNUMMER, ARTDESAUFTRAGS: auftrag.ARTDESAUFTRAGS, AUFTRAGSDATUM: auftrag.AUFTRAGSDATUM });
     res.status(200).json({ success: true });
 });
 
@@ -129,9 +129,9 @@ app.get('/api/rechnungen', async (req, res) => {
 app.post('/api/createrechnung', async (req, res) => {
     let rechnung = req.body;
     try {
-        let result = await DatabaseQueries.executeQuery("INSERT INTO RECHNUNG (RECHNUNGSNR, AUFTRAGSNUMMER, KUNDENID, SUMME, RECHNUNGSDATUM, ZAHLUNGSART, RABATT, LAUFZEIT, AUFPREIS) \
-        VALUES (:RECHNUNGSNR, :AUFTRAGSNUMMER, :KUNDENID, :SUMME, :RECHNUNGSDATUM, :ZAHLUNGSART, :RABATT, :LAUFZEIT, :AUFPREIS)",
-            { RECHNUNGSNR:rechnung.RECHNUNGSNR, AUFTRAGSNUMMER: rechnung.AUFTRAGSNUMMER, KUNDENID: rechnung.KUNDENID, SUMME: rechnung.SUMME, RECHNUNGSDATUM: rechnung.RECHNUNGSDATUM, ZAHLUNGSART: rechnung.ZAHLUNGSART, RABATT: rechnung.RABATT, LAUFZEIT: rechnung.LAUFZEIT, AUFPREIS: rechnung.AUFPREIS});
+        let result = await DatabaseQueries.executeQuery("INSERT INTO RECHNUNG (RECHNUNGSNR, AUFTRAGSNUMMER, KUNDENID, SUMME, RECHNUNGSDATUM, ZAHLUNGSART, RABATT, LAUFZEIT, AUFPREIS, MITARBEITERARBEITSZEITEN) \
+        VALUES (:RECHNUNGSNR, :AUFTRAGSNUMMER, :KUNDENID, :SUMME, :RECHNUNGSDATUM, :ZAHLUNGSART, :RABATT, :LAUFZEIT, :AUFPREISm :MITARBEITERARBEITSZEITEN)",
+            { RECHNUNGSNR:rechnung.RECHNUNGSNR, AUFTRAGSNUMMER: rechnung.AUFTRAGSNUMMER, KUNDENID: rechnung.KUNDENID, SUMME: rechnung.SUMME, RECHNUNGSDATUM: rechnung.RECHNUNGSDATUM, ZAHLUNGSART: rechnung.ZAHLUNGSART, RABATT: rechnung.RABATT, LAUFZEIT: rechnung.LAUFZEIT, AUFPREIS: rechnung.AUFPREIS, MITARBEITERARBEITSZEITEN: rechnung.MITARBEITERARBEITSZEITEN });
         res.status(200).json({ success: true });
     } catch (err) {
         console.log(err);
@@ -181,6 +181,287 @@ app.delete('/api/deletelieferrant', async (req, res) => {
     try {
         let result = await DatabaseQueries.executeQuery("DELETE LIEFERRANT WHERE LIEFERRANTENNR = :LIEFERRANTENNR",
             { LIEFERRANTENNR: lieferrantnr });
+        res.status(200).json({ success: true });
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ success: false });
+    }
+
+});
+
+
+app.get('/api/bestellungen', async (req, res) => {
+    try {
+        let result = await DatabaseQueries.executeQuery("SELECT * FROM BESTELLUNG", {});
+        res.status(200).json(result?.rows);
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ success: false });
+    }
+});
+
+app.post('/api/createbestellung', async (req, res) => {
+    let BESTELLUNG = req.body;
+    try {
+        let result = await DatabaseQueries.executeQuery("INSERT INTO BESTELLUNG (BESTELLUNGSNR,LIEFERRANTENNR,LIEFERDATUM,BESTELLDATUM,BESTELLMENGE) \
+        VALUES (:BESTELLUNGSNR,:LIEFERRANTENNR,:LIEFERDATUM,:BESTELLDATUM,:BESTELLMENGE)",
+            {BESTELLUNGSNR:BESTELLUNG.BESTELLUNGSNR,LIEFERRANTENNR: BESTELLUNG.LIEFERRANTENNR,LIEFERDATUM: BESTELLUNG.LIEFERDATUM,BESTELLDATUM: BESTELLUNG.BESTELLDATUM,BESTELLMENGE: BESTELLUNG.BESTELLMENGE});
+        res.status(200).json({ success: true });
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ success: false });
+    }
+});
+
+app.delete('/api/deletebestellung', async (req, res) => {
+    let bestellungsnr = req.body.BESTELLUNGSNR;
+    try {
+        let result = await DatabaseQueries.executeQuery("DELETE BESTELLUNG WHERE BESTELLUNGSNR = :BESTELLUNGSNR",
+            { BESTELLUNGSNR: bestellungsnr });
+        res.status(200).json({ success: true });
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ success: false });
+    }
+
+});
+
+
+app.get('/api/firmen', async (req, res) => {
+    try {
+        let result = await DatabaseQueries.executeQuery("SELECT * FROM FIRMA", {});
+        res.status(200).json(result?.rows);
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ success: false });
+    }
+});
+
+app.post('/api/createfirma', async (req, res) => {
+    let firma = req.body;
+    try {
+        let result = await DatabaseQueries.executeQuery("INSERT INTO FIRMA (FIRMENID,PLZ,FIRMENSTRASSE,FIRMENHAUSNUMMER) \
+        VALUES (:FIRMENID,:PLZ,:FIRMENSTRASSE,:FIRMENHAUSNUMMER)",
+            {FIRMENID:firma.FIRMENID,PLZ: firma.PLZ,FIRMENSTRASSE: firma.FIRMENSTRASSE,FIRMENHAUSNUMMER: firma.FIRMENHAUSNUMMER});
+        res.status(200).json({ success: true });
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ success: false });
+    }
+});
+
+app.delete('/api/deletefirma', async (req, res) => {
+    let firmenid = req.body.BESTELLUNGSNR;
+    try {
+        let result = await DatabaseQueries.executeQuery("DELETE FIRMA WHERE FIRMENID = :FIRMENID",
+            { FIRMENID: firmenid });
+        res.status(200).json({ success: true });
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ success: false });
+    }
+
+});
+
+
+app.get('/api/firmenwagen', async (req, res) => {
+    try {
+        let result = await DatabaseQueries.executeQuery("SELECT * FROM FIRMENWAGEN", {});
+        res.status(200).json(result?.rows);
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ success: false });
+    }
+});
+
+app.post('/api/createfirmenwagen', async (req, res) => {
+    let firmenwagen = req.body;
+    try {
+        let result = await DatabaseQueries.executeQuery("INSERT INTO FIRMENWAGEN (KENNZEICHEN, FIRMENID, TUEV, TYP) \
+        VALUES (:KENNZEICHEN,:FIRMENID,:TUEV,:TYP)",
+            {KENNZEICHEN:firmenwagen.KENNZEICHEN,FIRMENID: firmenwagen.FIRMENID,TUEV: firmenwagen.TUEV,TYP: firmenwagen.TYP});
+        res.status(200).json({ success: true });
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ success: false });
+    }
+});
+
+app.delete('/api/deletefirmenwagen', async (req, res) => {
+    let kennzeichen = req.body.KENNZEICHEN;
+    try {
+        let result = await DatabaseQueries.executeQuery("DELETE FIRMENWAGEN WHERE KENNZEICHEN = :KENNZEICHEN",
+            { KENNZEICHEN: kennzeichen });
+        res.status(200).json({ success: true });
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ success: false });
+    }
+
+});
+
+app.get('/api/lager', async (req, res) => {
+    try {
+        let result = await DatabaseQueries.executeQuery("SELECT * FROM LAGER", {});
+        res.status(200).json(result?.rows);
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ success: false });
+    }
+});
+
+app.post('/api/createlager', async (req, res) => {
+    let lager = req.body;
+    try {
+        let result = await DatabaseQueries.executeQuery("INSERT INTO LAGER (LAGERID, FIRMENID, ARBEITSBEREICH) \
+        VALUES (:LAGERID,:FIRMENID,:ARBEITSBEREICH)",
+            {LAEGERID:lager.LAEGERID,FIRMENID: lager.FIRMENID,ARBEITSBEREICH: lager.ARBEITSBEREICH});
+        res.status(200).json({ success: true });
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ success: false });
+    }
+});
+
+app.delete('/api/deletelager', async (req, res) => {
+    let lagerid = req.body.LAGERID;
+    try {
+        let result = await DatabaseQueries.executeQuery("DELETE LAGER WHERE LAGERID = :LAGERID",
+            { LAGERID: lagerid });
+        res.status(200).json({ success: true });
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ success: false });
+    }
+
+});
+
+
+
+app.get('/api/materialien', async (req, res) => {
+    try {
+        let result = await DatabaseQueries.executeQuery("SELECT * FROM MATERIALIEN", {});
+        res.status(200).json(result?.rows);
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ success: false });
+    }
+});
+
+app.post('/api/creatematerial', async (req, res) => {
+    let material = req.body;
+    try {
+        let result = await DatabaseQueries.executeQuery("INSERT INTO MATERIALIEN (ARTIKELNUMMER, BESTELLUNGSNR, EINKAUFSPREIS, VERKAUFSPREIS, BEZEICHNUNG, BESTAND, KAPAZITAT, MINDESTBESTAND) \
+        VALUES (:ARTIKELNUMMER,:BESTELLUNGSNR,:EINKAUFSPREIS,:VERKAUFSPREIS,:BEZEICHNUNG,:BESTAND,:KAPAZITAT,:MINDESTBESTAND)",
+            {ARTIKELNUMMER:material.ARTIKELNUMMER,BESTELLUNGSNR: material.BESTELLUNGSNR,EINKAUFSPREIS: material.EINKAUFSPREIS,VERKAUFSPREIS: material.VERKAUFSPREIS,BEZEICHNUNG: material.BEZEICHNUNG,BESTAND: material.BESTAND,KAPAZITAT: material.KAPAZITAT,MINDESTBESTAND: material.MINDESTBESTAND});
+        res.status(200).json({ success: true });
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ success: false });
+    }
+});
+
+app.delete('/api/deletematerial', async (req, res) => {
+    let artikelnummer = req.body.LAGERID;
+    try {
+        let result = await DatabaseQueries.executeQuery("DELETE MATERIALIEN WHERE ARTIKELNUMMER = :ARTIKELNUMMER",
+            { ARTIKELNUMMER: artikelnummer });
+        res.status(200).json({ success: true });
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ success: false });
+    }
+
+});
+
+app.get('/api/preisaenderungen', async (req, res) => {
+    try {
+        let result = await DatabaseQueries.executeQuery("SELECT * FROM PREISAENDERUNGEN", {});
+        res.status(200).json(result?.rows);
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ success: false });
+    }
+});
+
+app.post('/api/createpreisaenderung', async (req, res) => {
+    let preisaenderung = req.body;
+    try {
+        let result = await DatabaseQueries.executeQuery("INSERT INTO PREISAENDERUNGEN (PREISID, ARTIKELNUMMER, ANDERUNGSDATUM, PREIS_ZU_DEM_ZEITPUNKT) \
+        VALUES (:PREISID,:ARTIKELNUMMER,:ANDERUNGSDATUM,:PREIS_ZU_DEM_ZEITPUNKT)",
+            {PREISID:preisaenderung.PREISID,ARTIKELNUMMER: preisaenderung.ARTIKELNUMMER,ANDERUNGSDATUM: preisaenderung.ANDERUNGSDATUM,PREIS_ZU_DEM_ZEITPUNKT: preisaenderung.PREIS_ZU_DEM_ZEITPUNKT});
+        res.status(200).json({ success: true });
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ success: false });
+    }
+});
+
+app.delete('/api/deletepreisaenderung', async (req, res) => {
+    let preisid = req.body.PREISID;
+    try {
+        let result = await DatabaseQueries.executeQuery("DELETE PREISAENDERUNGEN WHERE PREISID = :PREISID",
+            { PREISID: preisid });
+        res.status(200).json({ success: true });
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ success: false });
+    }
+
+});
+
+app.get('/api/getstadt', async (req, res) => {
+    try {
+        let plz = req.query.plz;
+        let result = await DatabaseQueries.executeQuery("SELECT STADTNAME FROM STAEDTE WHERE PLZ = :PLZ", {PLZ: plz});
+        res.status(200).json(result?.rows);
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ success: false });
+    }
+});
+
+app.get('/api/getplz', async (req, res) => {
+    try {
+        let stadtname = req.query.stadtname;
+        let result = await DatabaseQueries.executeQuery("SELECT PLZ FROM STAEDTE WHERE STADTNAME = :STADTNAME", {STADTNAME: stadtname});
+        res.status(200).json(result?.rows);
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ success: false });
+    }
+});
+
+
+
+app.get('/api/unterweisungen', async (req, res) => {
+    try {
+        let result = await DatabaseQueries.executeQuery("SELECT * FROM UNTERWEISUNG", {});
+        res.status(200).json(result?.rows);
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ success: false });
+    }
+});
+
+app.post('/api/createunterweisung', async (req, res) => {
+    let unterweisung = req.body;
+    try {
+        let result = await DatabaseQueries.executeQuery("INSERT INTO UNTERWEISUNG (UNTERWEISUNGSID, MITARBEITERID, UNTERWEISUNGSNAME) \
+        VALUES (:UNTERWEISUNGSID,:MITARBEITERID,:UNTERWEISUNGSNAME)",
+            {UNTERWEISUNGSID:unterweisung.UNTERWEISUNGSID,MITARBEITERID: unterweisung.MITARBEITERID,UNTERWEISUNGSNAME: unterweisung.UNTERWEISUNGSNAME});
+        res.status(200).json({ success: true });
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ success: false });
+    }
+});
+
+app.delete('/api/deleteunterweisung', async (req, res) => {
+    let unterweisungsid = req.body.UNTERWEISUNGSID;
+    try {
+        let result = await DatabaseQueries.executeQuery("DELETE UNTERWEISUNG WHERE UNTERWEISUNGSID = :UNTERWEISUNGSID",
+            { UNTERWEISUNGSID: unterweisungsid });
         res.status(200).json({ success: true });
     } catch (err) {
         console.log(err);
