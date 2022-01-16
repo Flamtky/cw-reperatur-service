@@ -415,7 +415,7 @@ app.post('/api/creatematerial', async (req, res) => {
 });
 
 app.delete('/api/deletematerial', async (req, res) => {
-    let artikelnummer = req.body.LAGERID;
+    let artikelnummer = req.body.ARTIKELNUMMER;
     try {
         let result = await DatabaseQueries.executeQuery("DELETE MATERIALIEN WHERE ARTIKELNUMMER = :ARTIKELNUMMER",
             { ARTIKELNUMMER: artikelnummer });
