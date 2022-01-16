@@ -335,7 +335,7 @@ app.post('/api/createfirmenwagen', async (req, res) => {
 app.delete('/api/deletefirmenwagen', async (req, res) => {
     let kennzeichen = req.body.KENNZEICHEN;
     try {
-        let result = await DatabaseQueries.executeQuery("DELETE FIRMENWAGEN WHERE KENNZEICHEN = :KENNZEICHEN",
+        let result = await DatabaseQueries.executeQuery("DELETE FIRMENWAGEN WHERE KENNZEICHEN = ':KENNZEICHEN'",
             { KENNZEICHEN: kennzeichen });
         res.status(200).json({ success: true });
     } catch (err) {
