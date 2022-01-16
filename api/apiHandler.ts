@@ -64,10 +64,39 @@ app.delete('/api/deleteauftrag', async (req, res) => {
 
 app.get('/api/kunden', async (req, res) => {
     try {
-        let result = await DatabaseQueries.executeQuery("SELECT * FROM KUNDEN", {});
-        let array: any[][] = [[]];
-        array[0].push((result?.metaData as unknown[]).map(x => (x as any).name));
-        res.status(200).json(array[0].concat(result?.rows));
+        if (Object.keys(req.query).length !== 1 && req.query._ != undefined) {
+            let result = await DatabaseQueries.executeQuery("SELECT * FROM KUNDEN", {});
+            let array: any[][] = [[]];
+            array[0].push((result?.metaData as unknown[]).map(x => (x as any).name));
+            res.status(200).json(array[0].concat(result?.rows));
+        } else if (req.query.KUNDENID != undefined) {
+            let result = await DatabaseQueries.executeQuery("SELECT * FROM KUNDEN WHERE KUNDENID = :KUNDENID", { KUNDENID: req.query.KUNDENID });
+            let array: any[][] = [[]];
+            array[0].push((result?.metaData as unknown[]).map(x => (x as any).name));
+            res.status(200).json(array[0].concat(result?.rows));
+        }
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ success: false });
+    }
+    apiCalls++;
+});
+
+app.post('/api/editkundenrabbat', async (req, res) => {
+    let kundeid = req.body.KUNDENID;
+    let rabatt = req.body.KUNDENRABATT;
+    try {
+        if (kundeid != undefined && rabatt != undefined) {
+            let result = await DatabaseQueries.executeQuery("UPDATE KUNDEN SET KUNDENRABATT = :KUNDENRABATT WHERE KUNDENID = :KUNDENID",
+                { KUNDENID: kundeid, KUNDENRABATT: rabatt });
+            if (result?.rowsAffected == 0 || result?.rowsAffected == undefined) {
+                res.status(404).json({ success: false });
+            } else {
+                res.status(200).json({ success: true });
+            }
+        } else {
+            res.status(400).json({ success: false });
+        }
     } catch (err) {
         console.log(err);
         res.status(500).json({ success: false });
@@ -103,10 +132,17 @@ app.delete('/api/deletekunde', async (req, res) => {
 
 app.get('/api/mitarbeiter', async (req, res) => {
     try {
-        let result = await DatabaseQueries.executeQuery("SELECT * FROM MITARBEITER", {});
-        let array: any[][] = [[]];
-        array[0].push((result?.metaData as unknown[]).map(x => (x as any).name));
-        res.status(200).json(array[0].concat(result?.rows));
+        if (Object.keys(req.query).length !== 1 && req.query._ != undefined) {
+            let result = await DatabaseQueries.executeQuery("SELECT * FROM MITARBEITER", {});
+            let array: any[][] = [[]];
+            array[0].push((result?.metaData as unknown[]).map(x => (x as any).name));
+            res.status(200).json(array[0].concat(result?.rows));
+        } else if (req.query.MITARBEITERID != undefined) {
+            let result = await DatabaseQueries.executeQuery("SELECT * FROM MITARBEITER WHERE MITARBEITERID = :MITARBEITERID", { KUNDENID: req.query.MITARBEITERID });
+            let array: any[][] = [[]];
+            array[0].push((result?.metaData as unknown[]).map(x => (x as any).name));
+            res.status(200).json(array[0].concat(result?.rows));
+        }
     } catch (err) {
         console.log(err);
         res.status(500).json({ success: false });
@@ -557,7 +593,9 @@ app.get('/api/wagen_verfuegbar', async (req, res) => {
             if (result === undefined) {
                 res.status(500).send("SQL Query Error");
             } else {
-                res.status(200).json(result.rows);
+                let array: any[][] = [[]];
+                array[0].push((result?.metaData as unknown[]).map(x => (x as any).name));
+                res.status(200).json(array[0].concat(result?.rows));
             }
         } catch (err) {
             console.log(err);
@@ -569,7 +607,9 @@ app.get('/api/wagen_verfuegbar', async (req, res) => {
             if (result === undefined) {
                 res.status(500).send("SQL Query Error");
             } else {
-                res.status(200).json(result.rows);
+                let array: any[][] = [[]];
+                array[0].push((result?.metaData as unknown[]).map(x => (x as any).name));
+                res.status(200).json(array[0].concat(result?.rows));
             }
         } catch (err) {
             console.log(err);
@@ -581,7 +621,9 @@ app.get('/api/wagen_verfuegbar', async (req, res) => {
             if (result === undefined) {
                 res.status(500).send("SQL Query Error");
             } else {
-                res.status(200).json(result.rows);
+                let array: any[][] = [[]];
+                array[0].push((result?.metaData as unknown[]).map(x => (x as any).name));
+                res.status(200).json(array[0].concat(result?.rows));
             }
         } catch (err) {
             console.log(err);
@@ -601,7 +643,9 @@ app.get('/api/auftraege_ohne_Rechnung', async (req, res) => {
             if (result === undefined) {
                 res.status(500).send("SQL Query Error");
             } else {
-                res.status(200).json(result.rows);
+                let array: any[][] = [[]];
+                array[0].push((result?.metaData as unknown[]).map(x => (x as any).name));
+                res.status(200).json(array[0].concat(result?.rows));
             }
         } catch (err) {
             console.log(err);
