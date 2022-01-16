@@ -8,7 +8,7 @@ dotenv.config({ path: './vars.env' });
 const app: express.Application = express();
 const port: number = 8080;
 
-let apiCalls:number = 0;
+let apiCalls: number = 0;
 
 
 app.use(cors());
@@ -53,7 +53,9 @@ app.delete('/api/deleteauftrag', async (req, res) => {
 app.get('/api/kunden', async (req, res) => {
     try {
         let result = await DatabaseQueries.executeQuery("SELECT * FROM KUNDEN", {});
-        res.status(200).json(result?.rows);
+        let array: any[][] = [[]];
+        array[0].push((result?.metaData as unknown[]).map(x => (x as any).name));
+        res.status(200).json(array[0].concat(result?.rows));
     } catch (err) {
         console.log(err);
         res.status(500).json({ success: false });
@@ -90,7 +92,9 @@ app.delete('/api/deletekunde', async (req, res) => {
 app.get('/api/mitarbeiter', async (req, res) => {
     try {
         let result = await DatabaseQueries.executeQuery("SELECT * FROM MITARBEITER", {});
-        res.status(200).json(result?.rows);
+        let array: any[][] = [[]];
+        array[0].push((result?.metaData as unknown[]).map(x => (x as any).name));
+        res.status(200).json(array[0].concat(result?.rows));
     } catch (err) {
         console.log(err);
         res.status(500).json({ success: false });
@@ -128,7 +132,9 @@ app.delete('/api/deletemitarbeiter', async (req, res) => {
 app.get('/api/rechnungen', async (req, res) => {
     try {
         let result = await DatabaseQueries.executeQuery("SELECT * FROM RECHNUNG", {});
-        res.status(200).json(result?.rows);
+        let array: any[][] = [[]];
+        array[0].push((result?.metaData as unknown[]).map(x => (x as any).name));
+        res.status(200).json(array[0].concat(result?.rows));
     } catch (err) {
         console.log(err);
         res.status(500).json({ success: false });
@@ -167,7 +173,9 @@ app.delete('/api/deleterechnung', async (req, res) => {
 app.get('/api/lieferranten', async (req, res) => {
     try {
         let result = await DatabaseQueries.executeQuery("SELECT * FROM LIEFERRANT", {});
-        res.status(200).json(result?.rows);
+        let array: any[][] = [[]];
+        array[0].push((result?.metaData as unknown[]).map(x => (x as any).name));
+        res.status(200).json(array[0].concat(result?.rows));
     } catch (err) {
         console.log(err);
         res.status(500).json({ success: false });
@@ -206,7 +214,9 @@ app.delete('/api/deletelieferrant', async (req, res) => {
 app.get('/api/bestellungen', async (req, res) => {
     try {
         let result = await DatabaseQueries.executeQuery("SELECT * FROM BESTELLUNG", {});
-        res.status(200).json(result?.rows);
+        let array: any[][] = [[]];
+        array[0].push((result?.metaData as unknown[]).map(x => (x as any).name));
+        res.status(200).json(array[0].concat(result?.rows));
     } catch (err) {
         console.log(err);
         res.status(500).json({ success: false });
@@ -245,7 +255,9 @@ app.delete('/api/deletebestellung', async (req, res) => {
 app.get('/api/firmen', async (req, res) => {
     try {
         let result = await DatabaseQueries.executeQuery("SELECT * FROM FIRMA", {});
-        res.status(200).json(result?.rows);
+        let array: any[][] = [[]];
+        array[0].push((result?.metaData as unknown[]).map(x => (x as any).name));
+        res.status(200).json(array[0].concat(result?.rows));
     } catch (err) {
         console.log(err);
         res.status(500).json({ success: false });
@@ -284,7 +296,9 @@ app.delete('/api/deletefirma', async (req, res) => {
 app.get('/api/firmenwagen', async (req, res) => {
     try {
         let result = await DatabaseQueries.executeQuery("SELECT * FROM FIRMENWAGEN", {});
-        res.status(200).json(result?.rows);
+        let array: any[][] = [[]];
+        array[0].push((result?.metaData as unknown[]).map(x => (x as any).name));
+        res.status(200).json(array[0].concat(result?.rows));
     } catch (err) {
         console.log(err);
         res.status(500).json({ success: false });
@@ -322,7 +336,9 @@ app.delete('/api/deletefirmenwagen', async (req, res) => {
 app.get('/api/lager', async (req, res) => {
     try {
         let result = await DatabaseQueries.executeQuery("SELECT * FROM LAGER", {});
-        res.status(200).json(result?.rows);
+        let array: any[][] = [[]];
+        array[0].push((result?.metaData as unknown[]).map(x => (x as any).name));
+        res.status(200).json(array[0].concat(result?.rows));
     } catch (err) {
         console.log(err);
         res.status(500).json({ success: false });
@@ -362,7 +378,9 @@ app.delete('/api/deletelager', async (req, res) => {
 app.get('/api/materialien', async (req, res) => {
     try {
         let result = await DatabaseQueries.executeQuery("SELECT * FROM MATERIALIEN", {});
-        res.status(200).json(result?.rows);
+        let array: any[][] = [[]];
+        array[0].push((result?.metaData as unknown[]).map(x => (x as any).name));
+        res.status(200).json(array[0].concat(result?.rows));
     } catch (err) {
         console.log(err);
         res.status(500).json({ success: false });
@@ -400,7 +418,9 @@ app.delete('/api/deletematerial', async (req, res) => {
 app.get('/api/preisaenderungen', async (req, res) => {
     try {
         let result = await DatabaseQueries.executeQuery("SELECT * FROM PREISAENDERUNGEN", {});
-        res.status(200).json(result?.rows);
+        let array: any[][] = [[]];
+        array[0].push((result?.metaData as unknown[]).map(x => (x as any).name));
+        res.status(200).json(array[0].concat(result?.rows));
     } catch (err) {
         console.log(err);
         res.status(500).json({ success: false });
@@ -439,7 +459,9 @@ app.get('/api/getstadt', async (req, res) => {
     try {
         let plz = req.query.plz;
         let result = await DatabaseQueries.executeQuery("SELECT STADTNAME FROM STAEDTE WHERE PLZ = :PLZ", { PLZ: plz });
-        res.status(200).json(result?.rows);
+        let array: any[][] = [[]];
+        array[0].push((result?.metaData as unknown[]).map(x => (x as any).name));
+        res.status(200).json(array[0].concat(result?.rows));
     } catch (err) {
         console.log(err);
         res.status(500).json({ success: false });
@@ -451,7 +473,9 @@ app.get('/api/getplz', async (req, res) => {
     try {
         let stadtname = req.query.stadtname;
         let result = await DatabaseQueries.executeQuery("SELECT PLZ FROM STAEDTE WHERE STADTNAME = :STADTNAME", { STADTNAME: stadtname });
-        res.status(200).json(result?.rows);
+        let array: any[][] = [[]];
+        array[0].push((result?.metaData as unknown[]).map(x => (x as any).name));
+        res.status(200).json(array[0].concat(result?.rows));
     } catch (err) {
         console.log(err);
         res.status(500).json({ success: false });
@@ -464,7 +488,9 @@ app.get('/api/getplz', async (req, res) => {
 app.get('/api/unterweisungen', async (req, res) => {
     try {
         let result = await DatabaseQueries.executeQuery("SELECT * FROM UNTERWEISUNG", {});
-        res.status(200).json(result?.rows);
+        let array: any[][] = [[]];
+        array[0].push((result?.metaData as unknown[]).map(x => (x as any).name));
+        res.status(200).json(array[0].concat(result?.rows));
     } catch (err) {
         console.log(err);
         res.status(500).json({ success: false });
@@ -500,13 +526,13 @@ app.delete('/api/deleteunterweisung', async (req, res) => {
 });
 
 app.get('/api/apicalls', async (req, res) => {
-        try {
-            res.status(200).send(apiCalls);
-        } catch (err) {
-            console.log(err);
-            res.status(500).json({ success: false });
-        }
- 
+    try {
+        res.status(200).send(apiCalls);
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ success: false });
+    }
+
     apiCalls++;
 });
 
@@ -516,7 +542,7 @@ app.get('/api/wagen_verfuegbar', async (req, res) => {
     if (Object.keys(req.query).length === 0) {
         try {
             let result = await DatabaseQueries.executeQuery("SELECT * FROM wagen_verfuegbar", {});
-            if(result === undefined) {
+            if (result === undefined) {
                 res.status(500).send("SQL Query Error");
             } else {
                 res.status(200).json(result.rows);
@@ -525,10 +551,10 @@ app.get('/api/wagen_verfuegbar', async (req, res) => {
             console.log(err);
             res.status(500).json({ success: false });
         }
-    }else if(req.query.kennzeichen != undefined){
+    } else if (req.query.kennzeichen != undefined) {
         try {
-            let result = await DatabaseQueries.executeQuery("SELECT * FROM wagen_verfuegbar WHERE KENNZEICHEN = :KENNZEICHEN", {KENNZEICHEN: req.query.kennzeichen});
-            if(result === undefined) {
+            let result = await DatabaseQueries.executeQuery("SELECT * FROM wagen_verfuegbar WHERE KENNZEICHEN = :KENNZEICHEN", { KENNZEICHEN: req.query.kennzeichen });
+            if (result === undefined) {
                 res.status(500).send("SQL Query Error");
             } else {
                 res.status(200).json(result.rows);
@@ -537,10 +563,10 @@ app.get('/api/wagen_verfuegbar', async (req, res) => {
             console.log(err);
             res.status(500).json({ success: false });
         }
-    }else if(req.query.datum != null){
+    } else if (req.query.datum != null) {
         try {
-            let result = await DatabaseQueries.executeQuery("SELECT * FROM wagen_verfuegbar WHERE DATUM = :DATUM", {DATUM: req.query.datum});
-            if(result === undefined) {
+            let result = await DatabaseQueries.executeQuery("SELECT * FROM wagen_verfuegbar WHERE DATUM = :DATUM", { DATUM: req.query.datum });
+            if (result === undefined) {
                 res.status(500).send("SQL Query Error");
             } else {
                 res.status(200).json(result.rows);
@@ -560,7 +586,7 @@ app.get('/api/auftraege_ohne_Rechnung', async (req, res) => {
     if (Object.keys(req.query).length === 0) {
         try {
             let result = await DatabaseQueries.executeQuery("SELECT * FROM auftraege_ohne_Rechnung", {});
-            if(result === undefined) {
+            if (result === undefined) {
                 res.status(500).send("SQL Query Error");
             } else {
                 res.status(200).json(result.rows);
@@ -580,7 +606,9 @@ app.get('/api/mitarbeiter_auftragsdatum', async (req, res) => {
     if (Object.keys(req.query).length === 0) {
         try {
             let result = await DatabaseQueries.executeQuery("SELECT * FROM mitarbeiter_auftragsdatum", {});
-            res.status(200).json(result?.rows);
+            let array: any[][] = [[]];
+            array[0].push((result?.metaData as unknown[]).map(x => (x as any).name));
+            res.status(200).json(array[0].concat(result?.rows));
         } catch (err) {
             console.log(err);
             res.status(500).json({ success: false });
@@ -596,7 +624,9 @@ app.get('/api/rechnung_summe', async (req, res) => {
     if (Object.keys(req.query).length === 0) {
         try {
             let result = await DatabaseQueries.executeQuery("SELECT * FROM rechnung_summe", {});
-            res.status(200).json(result?.rows);
+            let array: any[][] = [[]];
+            array[0].push((result?.metaData as unknown[]).map(x => (x as any).name));
+            res.status(200).json(array[0].concat(result?.rows));
         } catch (err) {
             console.log(err);
             res.status(500).json({ success: false });
@@ -612,7 +642,9 @@ app.get('/api/materialien_verbrauch_monat', async (req, res) => {
     if (Object.keys(req.query).length === 0) {
         try {
             let result = await DatabaseQueries.executeQuery("SELECT * FROM materialien_verbrauch_monat", {});
-            res.status(200).json(result?.rows);
+            let array: any[][] = [[]];
+            array[0].push((result?.metaData as unknown[]).map(x => (x as any).name));
+            res.status(200).json(array[0].concat(result?.rows));
         } catch (err) {
             console.log(err);
             res.status(500).json({ success: false });
@@ -628,7 +660,9 @@ app.get('/api/kunden_rabatt_rechnung', async (req, res) => {
     if (Object.keys(req.query).length === 0) {
         try {
             let result = await DatabaseQueries.executeQuery("SELECT * FROM kunden_rabatt_rechnung", {});
-            res.status(200).json(result?.rows);
+            let array: any[][] = [[]];
+            array[0].push((result?.metaData as unknown[]).map(x => (x as any).name));
+            res.status(200).json(array[0].concat(result?.rows));
         } catch (err) {
             console.log(err);
             res.status(500).json({ success: false });
@@ -644,7 +678,9 @@ app.get('/api/mitarbeiter_lager_fehlende_menge', async (req, res) => {
     if (Object.keys(req.query).length === 0) {
         try {
             let result = await DatabaseQueries.executeQuery("SELECT * FROM mitarbeiter_lager_fehlende_menge", {});
-            res.status(200).json(result?.rows);
+            let array: any[][] = [[]];
+            array[0].push((result?.metaData as unknown[]).map(x => (x as any).name));
+            res.status(200).json(array[0].concat(result?.rows));
         } catch (err) {
             console.log(err);
             res.status(500).json({ success: false });
@@ -660,7 +696,9 @@ app.get('/api/auftrag_invalid_material', async (req, res) => {
     if (Object.keys(req.query).length === 0) {
         try {
             let result = await DatabaseQueries.executeQuery("SELECT * FROM auftrag_invalid_material", {});
-            res.status(200).json(result?.rows);
+            let array: any[][] = [[]];
+            array[0].push((result?.metaData as unknown[]).map(x => (x as any).name));
+            res.status(200).json(array[0].concat(result?.rows));
         } catch (err) {
             console.log(err);
             res.status(500).json({ success: false });
@@ -676,7 +714,9 @@ app.get('/api/firmenwagen_belegt', async (req, res) => {
     if (Object.keys(req.query).length === 0) {
         try {
             let result = await DatabaseQueries.executeQuery("SELECT * FROM firmenwagen_belegt", {});
-            res.status(200).json(result?.rows);
+            let array: any[][] = [[]];
+            array[0].push((result?.metaData as unknown[]).map(x => (x as any).name));
+            res.status(200).json(array[0].concat(result?.rows));
         } catch (err) {
             console.log(err);
             res.status(500).json({ success: false });
@@ -692,7 +732,9 @@ app.get('/api/firma_stats', async (req, res) => {
     if (Object.keys(req.query).length === 0) {
         try {
             let result = await DatabaseQueries.executeQuery("SELECT * FROM firma_stats", {});
-            res.status(200).json(result?.rows);
+            let array: any[][] = [[]];
+            array[0].push((result?.metaData as unknown[]).map(x => (x as any).name));
+            res.status(200).json(array[0].concat(result?.rows));
         } catch (err) {
             console.log(err);
             res.status(500).json({ success: false });
