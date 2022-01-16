@@ -22,18 +22,28 @@ app.get('/api/', async (req, res) => {
 
 app.get('/api/auftraege', async (req, res) => {
     let result = await DatabaseQueries.executeQuery("SELECT * FROM AUFTRAEGE");
-    let array: any[][] = [[]];
+    try {
+        let array: any[][] = [[]];
         array[0].push((result?.metaData as unknown[]).map(x => (x as any).name));
         res.status(200).json(array[0].concat(result?.rows));
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ success: false });
+    }
     apiCalls++;
 });
 
 app.post('/api/createauftrag', async (req, res) => {
     let auftrag = req.body;
     console.log(auftrag);
-    let result = await DatabaseQueries.executeQuery("INSERT INTO AUFTRAEGE (AUFTRAGSNUMMER, KUNDENID, PLZ, AUFTRAGSSTRASSE, AUFTRAGSHAUSNUMMER, ARTDESAUFTRAGS, AUFTRAGSDATUM) VALUES (:AUFTRAGSNUMMER, :KUNDENID, :PLZ, :AUFTRAGSSTRASSE, :AUFTRAGSHAUSNUMMER, :ARTDESAUFTRAGS, :AUFTRAGSDATUM)",
-        { AUFTRAGSNUMMER: auftrag.AUFTRAGSNUMMER, KUNDENID: auftrag.KUNDENID, PLZ: auftrag.PLZ, AUFTRAGSSTRASSE: auftrag.AUFTRAGSSTRASSE, AUFTRAGSHAUSNUMMER: auftrag.AUFTRAGSHAUSNUMMER, ARTDESAUFTRAGS: auftrag.ARTDESAUFTRAGS, AUFTRAGSDATUM: auftrag.AUFTRAGSDATUM });
-    res.status(200).json({ success: true });
+    try {
+        let result = await DatabaseQueries.executeQuery("INSERT INTO AUFTRAEGE (AUFTRAGSNUMMER, KUNDENID, PLZ, AUFTRAGSSTRASSE, AUFTRAGSHAUSNUMMER, ARTDESAUFTRAGS, AUFTRAGSDATUM) VALUES (:AUFTRAGSNUMMER, :KUNDENID, :PLZ, :AUFTRAGSSTRASSE, :AUFTRAGSHAUSNUMMER, :ARTDESAUFTRAGS, :AUFTRAGSDATUM)",
+            { AUFTRAGSNUMMER: auftrag.AUFTRAGSNUMMER, KUNDENID: auftrag.KUNDENID, PLZ: auftrag.PLZ, AUFTRAGSSTRASSE: auftrag.AUFTRAGSSTRASSE, AUFTRAGSHAUSNUMMER: auftrag.AUFTRAGSHAUSNUMMER, ARTDESAUFTRAGS: auftrag.ARTDESAUFTRAGS, AUFTRAGSDATUM: auftrag.AUFTRAGSDATUM });
+        res.status(200).json({ success: true });
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ success: false });
+    }
     apiCalls++;
 });
 
