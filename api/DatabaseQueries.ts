@@ -18,6 +18,7 @@ export class DatabaseQueries {
                     password: "cwrs",
                     connectString: "ORCL"
                 });
+            
                 console.log("Database connection established.");
                 resolve(OracleDB.getConnection());
             } catch (err) {
@@ -34,6 +35,7 @@ export class DatabaseQueries {
                 if (connection === undefined) throw new Error("Connection is undefined");
                 const result = await connection?.execute(query,values);
                 connection.commit();
+                connection.close();
                 resolve(result);
             } catch (err) {
                 console.log(err);
