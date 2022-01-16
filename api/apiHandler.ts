@@ -8,6 +8,8 @@ dotenv.config({ path: './vars.env' });
 const app: express.Application = express();
 const port: number = 8080;
 
+let apiCalls:number = 0;
+
 
 app.use(cors());
 app.use(bodyParser.json({ limit: '50mb' }));
@@ -21,6 +23,7 @@ app.get('/api/', async (req, res) => {
 app.get('/api/auftraege', async (req, res) => {
     let result = await DatabaseQueries.executeQuery("SELECT * FROM AUFTRAEGE");
     res.json(result?.rows);
+    apiCalls++;
 });
 
 app.post('/api/createauftrag', async (req, res) => {
@@ -29,6 +32,7 @@ app.post('/api/createauftrag', async (req, res) => {
     let result = await DatabaseQueries.executeQuery("INSERT INTO AUFTRAEGE (AUFTRAGSNUMMER, KUNDENID, PLZ, AUFTRAGSSTRASSE, AUFTRAGSHAUSNUMMER, ARTDESAUFTRAGS, AUFTRAGSDATUM) VALUES (:AUFTRAGSNUMMER, :KUNDENID, :PLZ, :AUFTRAGSSTRASSE, :AUFTRAGSHAUSNUMMER, :MITARBEITERARBEITSZEIT, :ARTDESAUFTRAGS, :AUFTRAGSDATUM)",
         { AUFTRAGSNUMMER: auftrag.AUFTRAGSNUMMER, KUNDENID: auftrag.KUNDENID, PLZ: auftrag.PLZ, AUFTRAGSSTRASSE: auftrag.AUFTRAGSSTRASSE, AUFTRAGSHAUSNUMMER: auftrag.AUFTRAGSHAUSNUMMER, ARTDESAUFTRAGS: auftrag.ARTDESAUFTRAGS, AUFTRAGSDATUM: auftrag.AUFTRAGSDATUM });
     res.status(200).json({ success: true });
+    apiCalls++;
 });
 
 app.delete('/api/deleteauftrag', async (req, res) => {
@@ -43,7 +47,7 @@ app.delete('/api/deleteauftrag', async (req, res) => {
         console.log(err);
         res.status(500).json({ success: false });
     }
-
+    apiCalls++;
 });
 
 app.get('/api/kunden', async (req, res) => {
@@ -54,6 +58,7 @@ app.get('/api/kunden', async (req, res) => {
         console.log(err);
         res.status(500).json({ success: false });
     }
+    apiCalls++;
 });
 
 app.post('/api/createkunde', async (req, res) => {
@@ -66,6 +71,7 @@ app.post('/api/createkunde', async (req, res) => {
         console.log(err);
         res.status(500).json({ success: false });
     }
+    apiCalls++;
 });
 
 app.delete('/api/deletekunde', async (req, res) => {
@@ -78,6 +84,7 @@ app.delete('/api/deletekunde', async (req, res) => {
         console.log(err);
         res.status(500).json({ success: false });
     }
+    apiCalls++;
 });
 
 app.get('/api/mitarbeiter', async (req, res) => {
@@ -88,6 +95,7 @@ app.get('/api/mitarbeiter', async (req, res) => {
         console.log(err);
         res.status(500).json({ success: false });
     }
+    apiCalls++;
 });
 
 app.post('/api/createmitarbeiter', async (req, res) => {
@@ -101,6 +109,7 @@ app.post('/api/createmitarbeiter', async (req, res) => {
         console.log(err);
         res.status(500).json({ success: false });
     }
+    apiCalls++;
 });
 
 app.delete('/api/deletemitarbeiter', async (req, res) => {
@@ -113,7 +122,7 @@ app.delete('/api/deletemitarbeiter', async (req, res) => {
         console.log(err);
         res.status(500).json({ success: false });
     }
-
+    apiCalls++;
 });
 
 app.get('/api/rechnungen', async (req, res) => {
@@ -124,6 +133,7 @@ app.get('/api/rechnungen', async (req, res) => {
         console.log(err);
         res.status(500).json({ success: false });
     }
+    apiCalls++;
 });
 
 app.post('/api/createrechnung', async (req, res) => {
@@ -131,12 +141,13 @@ app.post('/api/createrechnung', async (req, res) => {
     try {
         let result = await DatabaseQueries.executeQuery("INSERT INTO RECHNUNG (RECHNUNGSNR, AUFTRAGSNUMMER, KUNDENID, SUMME, RECHNUNGSDATUM, ZAHLUNGSART, RABATT, LAUFZEIT, AUFPREIS, MITARBEITERARBEITSZEITEN) \
         VALUES (:RECHNUNGSNR, :AUFTRAGSNUMMER, :KUNDENID, :SUMME, :RECHNUNGSDATUM, :ZAHLUNGSART, :RABATT, :LAUFZEIT, :AUFPREISm :MITARBEITERARBEITSZEITEN)",
-            { RECHNUNGSNR:rechnung.RECHNUNGSNR, AUFTRAGSNUMMER: rechnung.AUFTRAGSNUMMER, KUNDENID: rechnung.KUNDENID, SUMME: rechnung.SUMME, RECHNUNGSDATUM: rechnung.RECHNUNGSDATUM, ZAHLUNGSART: rechnung.ZAHLUNGSART, RABATT: rechnung.RABATT, LAUFZEIT: rechnung.LAUFZEIT, AUFPREIS: rechnung.AUFPREIS, MITARBEITERARBEITSZEITEN: rechnung.MITARBEITERARBEITSZEITEN });
+            { RECHNUNGSNR: rechnung.RECHNUNGSNR, AUFTRAGSNUMMER: rechnung.AUFTRAGSNUMMER, KUNDENID: rechnung.KUNDENID, SUMME: rechnung.SUMME, RECHNUNGSDATUM: rechnung.RECHNUNGSDATUM, ZAHLUNGSART: rechnung.ZAHLUNGSART, RABATT: rechnung.RABATT, LAUFZEIT: rechnung.LAUFZEIT, AUFPREIS: rechnung.AUFPREIS, MITARBEITERARBEITSZEITEN: rechnung.MITARBEITERARBEITSZEITEN });
         res.status(200).json({ success: true });
     } catch (err) {
         console.log(err);
         res.status(500).json({ success: false });
     }
+    apiCalls++;
 });
 
 app.delete('/api/deleterechnung', async (req, res) => {
@@ -149,7 +160,7 @@ app.delete('/api/deleterechnung', async (req, res) => {
         console.log(err);
         res.status(500).json({ success: false });
     }
-
+    apiCalls++;
 });
 
 
@@ -161,6 +172,7 @@ app.get('/api/lieferranten', async (req, res) => {
         console.log(err);
         res.status(500).json({ success: false });
     }
+    apiCalls++;
 });
 
 app.post('/api/createlieferrant', async (req, res) => {
@@ -168,12 +180,13 @@ app.post('/api/createlieferrant', async (req, res) => {
     try {
         let result = await DatabaseQueries.executeQuery("INSERT INTO LIEFERRANT (LIEFERRANTENNR,LIEFERRANTENNAME,URL,EMAIL,BESTELLRABATT,LIEFERRANTENTELEFONNUMMER) \
         VALUES (:LIEFERRANTENNR,:LIEFERRANTENNAME,:URL,:EMAIL,:BESTELLRABATT,:LIEFERRANTENTELEFONNUMMER)",
-            { LIEFERRANTENNR:lieferrant.LIEFERRANTENNR,LIEFERRANTENNAME: lieferrant.LIEFERRANTENNAME,URL: lieferrant.URL,EMAIL: lieferrant.EMAIL,BESTELLRABATT: lieferrant.BESTELLRABATT,LIEFERRANTENTELEFONNUMMER: lieferrant.LIEFERRANTENTELEFONNUMMER});
+            { LIEFERRANTENNR: lieferrant.LIEFERRANTENNR, LIEFERRANTENNAME: lieferrant.LIEFERRANTENNAME, URL: lieferrant.URL, EMAIL: lieferrant.EMAIL, BESTELLRABATT: lieferrant.BESTELLRABATT, LIEFERRANTENTELEFONNUMMER: lieferrant.LIEFERRANTENTELEFONNUMMER });
         res.status(200).json({ success: true });
     } catch (err) {
         console.log(err);
         res.status(500).json({ success: false });
     }
+    apiCalls++;
 });
 
 app.delete('/api/deletelieferrant', async (req, res) => {
@@ -186,7 +199,7 @@ app.delete('/api/deletelieferrant', async (req, res) => {
         console.log(err);
         res.status(500).json({ success: false });
     }
-
+    apiCalls++;
 });
 
 
@@ -198,6 +211,7 @@ app.get('/api/bestellungen', async (req, res) => {
         console.log(err);
         res.status(500).json({ success: false });
     }
+    apiCalls++;
 });
 
 app.post('/api/createbestellung', async (req, res) => {
@@ -205,12 +219,13 @@ app.post('/api/createbestellung', async (req, res) => {
     try {
         let result = await DatabaseQueries.executeQuery("INSERT INTO BESTELLUNG (BESTELLUNGSNR,LIEFERRANTENNR,LIEFERDATUM,BESTELLDATUM,BESTELLMENGE) \
         VALUES (:BESTELLUNGSNR,:LIEFERRANTENNR,:LIEFERDATUM,:BESTELLDATUM,:BESTELLMENGE)",
-            {BESTELLUNGSNR:BESTELLUNG.BESTELLUNGSNR,LIEFERRANTENNR: BESTELLUNG.LIEFERRANTENNR,LIEFERDATUM: BESTELLUNG.LIEFERDATUM,BESTELLDATUM: BESTELLUNG.BESTELLDATUM,BESTELLMENGE: BESTELLUNG.BESTELLMENGE});
+            { BESTELLUNGSNR: BESTELLUNG.BESTELLUNGSNR, LIEFERRANTENNR: BESTELLUNG.LIEFERRANTENNR, LIEFERDATUM: BESTELLUNG.LIEFERDATUM, BESTELLDATUM: BESTELLUNG.BESTELLDATUM, BESTELLMENGE: BESTELLUNG.BESTELLMENGE });
         res.status(200).json({ success: true });
     } catch (err) {
         console.log(err);
         res.status(500).json({ success: false });
     }
+    apiCalls++;
 });
 
 app.delete('/api/deletebestellung', async (req, res) => {
@@ -223,7 +238,7 @@ app.delete('/api/deletebestellung', async (req, res) => {
         console.log(err);
         res.status(500).json({ success: false });
     }
-
+    apiCalls++;
 });
 
 
@@ -235,6 +250,7 @@ app.get('/api/firmen', async (req, res) => {
         console.log(err);
         res.status(500).json({ success: false });
     }
+    apiCalls++;
 });
 
 app.post('/api/createfirma', async (req, res) => {
@@ -242,12 +258,13 @@ app.post('/api/createfirma', async (req, res) => {
     try {
         let result = await DatabaseQueries.executeQuery("INSERT INTO FIRMA (FIRMENID,PLZ,FIRMENSTRASSE,FIRMENHAUSNUMMER) \
         VALUES (:FIRMENID,:PLZ,:FIRMENSTRASSE,:FIRMENHAUSNUMMER)",
-            {FIRMENID:firma.FIRMENID,PLZ: firma.PLZ,FIRMENSTRASSE: firma.FIRMENSTRASSE,FIRMENHAUSNUMMER: firma.FIRMENHAUSNUMMER});
+            { FIRMENID: firma.FIRMENID, PLZ: firma.PLZ, FIRMENSTRASSE: firma.FIRMENSTRASSE, FIRMENHAUSNUMMER: firma.FIRMENHAUSNUMMER });
         res.status(200).json({ success: true });
     } catch (err) {
         console.log(err);
         res.status(500).json({ success: false });
     }
+    apiCalls++;
 });
 
 app.delete('/api/deletefirma', async (req, res) => {
@@ -260,7 +277,7 @@ app.delete('/api/deletefirma', async (req, res) => {
         console.log(err);
         res.status(500).json({ success: false });
     }
-
+    apiCalls++;
 });
 
 
@@ -272,6 +289,7 @@ app.get('/api/firmenwagen', async (req, res) => {
         console.log(err);
         res.status(500).json({ success: false });
     }
+    apiCalls++;
 });
 
 app.post('/api/createfirmenwagen', async (req, res) => {
@@ -279,12 +297,13 @@ app.post('/api/createfirmenwagen', async (req, res) => {
     try {
         let result = await DatabaseQueries.executeQuery("INSERT INTO FIRMENWAGEN (KENNZEICHEN, FIRMENID, TUEV, TYP) \
         VALUES (:KENNZEICHEN,:FIRMENID,:TUEV,:TYP)",
-            {KENNZEICHEN:firmenwagen.KENNZEICHEN,FIRMENID: firmenwagen.FIRMENID,TUEV: firmenwagen.TUEV,TYP: firmenwagen.TYP});
+            { KENNZEICHEN: firmenwagen.KENNZEICHEN, FIRMENID: firmenwagen.FIRMENID, TUEV: firmenwagen.TUEV, TYP: firmenwagen.TYP });
         res.status(200).json({ success: true });
     } catch (err) {
         console.log(err);
         res.status(500).json({ success: false });
     }
+    apiCalls++;
 });
 
 app.delete('/api/deletefirmenwagen', async (req, res) => {
@@ -297,7 +316,7 @@ app.delete('/api/deletefirmenwagen', async (req, res) => {
         console.log(err);
         res.status(500).json({ success: false });
     }
-
+    apiCalls++;
 });
 
 app.get('/api/lager', async (req, res) => {
@@ -308,6 +327,7 @@ app.get('/api/lager', async (req, res) => {
         console.log(err);
         res.status(500).json({ success: false });
     }
+    apiCalls++;
 });
 
 app.post('/api/createlager', async (req, res) => {
@@ -315,12 +335,13 @@ app.post('/api/createlager', async (req, res) => {
     try {
         let result = await DatabaseQueries.executeQuery("INSERT INTO LAGER (LAGERID, FIRMENID, ARBEITSBEREICH) \
         VALUES (:LAGERID,:FIRMENID,:ARBEITSBEREICH)",
-            {LAEGERID:lager.LAEGERID,FIRMENID: lager.FIRMENID,ARBEITSBEREICH: lager.ARBEITSBEREICH});
+            { LAEGERID: lager.LAEGERID, FIRMENID: lager.FIRMENID, ARBEITSBEREICH: lager.ARBEITSBEREICH });
         res.status(200).json({ success: true });
     } catch (err) {
         console.log(err);
         res.status(500).json({ success: false });
     }
+    apiCalls++;
 });
 
 app.delete('/api/deletelager', async (req, res) => {
@@ -333,7 +354,7 @@ app.delete('/api/deletelager', async (req, res) => {
         console.log(err);
         res.status(500).json({ success: false });
     }
-
+    apiCalls++;
 });
 
 
@@ -346,6 +367,7 @@ app.get('/api/materialien', async (req, res) => {
         console.log(err);
         res.status(500).json({ success: false });
     }
+    apiCalls++;
 });
 
 app.post('/api/creatematerial', async (req, res) => {
@@ -353,12 +375,13 @@ app.post('/api/creatematerial', async (req, res) => {
     try {
         let result = await DatabaseQueries.executeQuery("INSERT INTO MATERIALIEN (ARTIKELNUMMER, BESTELLUNGSNR, EINKAUFSPREIS, VERKAUFSPREIS, BEZEICHNUNG, BESTAND, KAPAZITAT, MINDESTBESTAND) \
         VALUES (:ARTIKELNUMMER,:BESTELLUNGSNR,:EINKAUFSPREIS,:VERKAUFSPREIS,:BEZEICHNUNG,:BESTAND,:KAPAZITAT,:MINDESTBESTAND)",
-            {ARTIKELNUMMER:material.ARTIKELNUMMER,BESTELLUNGSNR: material.BESTELLUNGSNR,EINKAUFSPREIS: material.EINKAUFSPREIS,VERKAUFSPREIS: material.VERKAUFSPREIS,BEZEICHNUNG: material.BEZEICHNUNG,BESTAND: material.BESTAND,KAPAZITAT: material.KAPAZITAT,MINDESTBESTAND: material.MINDESTBESTAND});
+            { ARTIKELNUMMER: material.ARTIKELNUMMER, BESTELLUNGSNR: material.BESTELLUNGSNR, EINKAUFSPREIS: material.EINKAUFSPREIS, VERKAUFSPREIS: material.VERKAUFSPREIS, BEZEICHNUNG: material.BEZEICHNUNG, BESTAND: material.BESTAND, KAPAZITAT: material.KAPAZITAT, MINDESTBESTAND: material.MINDESTBESTAND });
         res.status(200).json({ success: true });
     } catch (err) {
         console.log(err);
         res.status(500).json({ success: false });
     }
+    apiCalls++;
 });
 
 app.delete('/api/deletematerial', async (req, res) => {
@@ -371,7 +394,7 @@ app.delete('/api/deletematerial', async (req, res) => {
         console.log(err);
         res.status(500).json({ success: false });
     }
-
+    apiCalls++;
 });
 
 app.get('/api/preisaenderungen', async (req, res) => {
@@ -382,6 +405,7 @@ app.get('/api/preisaenderungen', async (req, res) => {
         console.log(err);
         res.status(500).json({ success: false });
     }
+    apiCalls++;
 });
 
 app.post('/api/createpreisaenderung', async (req, res) => {
@@ -389,12 +413,13 @@ app.post('/api/createpreisaenderung', async (req, res) => {
     try {
         let result = await DatabaseQueries.executeQuery("INSERT INTO PREISAENDERUNGEN (PREISID, ARTIKELNUMMER, ANDERUNGSDATUM, PREIS_ZU_DEM_ZEITPUNKT) \
         VALUES (:PREISID,:ARTIKELNUMMER,:ANDERUNGSDATUM,:PREIS_ZU_DEM_ZEITPUNKT)",
-            {PREISID:preisaenderung.PREISID,ARTIKELNUMMER: preisaenderung.ARTIKELNUMMER,ANDERUNGSDATUM: preisaenderung.ANDERUNGSDATUM,PREIS_ZU_DEM_ZEITPUNKT: preisaenderung.PREIS_ZU_DEM_ZEITPUNKT});
+            { PREISID: preisaenderung.PREISID, ARTIKELNUMMER: preisaenderung.ARTIKELNUMMER, ANDERUNGSDATUM: preisaenderung.ANDERUNGSDATUM, PREIS_ZU_DEM_ZEITPUNKT: preisaenderung.PREIS_ZU_DEM_ZEITPUNKT });
         res.status(200).json({ success: true });
     } catch (err) {
         console.log(err);
         res.status(500).json({ success: false });
     }
+    apiCalls++;
 });
 
 app.delete('/api/deletepreisaenderung', async (req, res) => {
@@ -407,29 +432,31 @@ app.delete('/api/deletepreisaenderung', async (req, res) => {
         console.log(err);
         res.status(500).json({ success: false });
     }
-
+    apiCalls++;
 });
 
 app.get('/api/getstadt', async (req, res) => {
     try {
         let plz = req.query.plz;
-        let result = await DatabaseQueries.executeQuery("SELECT STADTNAME FROM STAEDTE WHERE PLZ = :PLZ", {PLZ: plz});
+        let result = await DatabaseQueries.executeQuery("SELECT STADTNAME FROM STAEDTE WHERE PLZ = :PLZ", { PLZ: plz });
         res.status(200).json(result?.rows);
     } catch (err) {
         console.log(err);
         res.status(500).json({ success: false });
     }
+    apiCalls++;
 });
 
 app.get('/api/getplz', async (req, res) => {
     try {
         let stadtname = req.query.stadtname;
-        let result = await DatabaseQueries.executeQuery("SELECT PLZ FROM STAEDTE WHERE STADTNAME = :STADTNAME", {STADTNAME: stadtname});
+        let result = await DatabaseQueries.executeQuery("SELECT PLZ FROM STAEDTE WHERE STADTNAME = :STADTNAME", { STADTNAME: stadtname });
         res.status(200).json(result?.rows);
     } catch (err) {
         console.log(err);
         res.status(500).json({ success: false });
     }
+    apiCalls++;
 });
 
 
@@ -442,6 +469,7 @@ app.get('/api/unterweisungen', async (req, res) => {
         console.log(err);
         res.status(500).json({ success: false });
     }
+    apiCalls++;
 });
 
 app.post('/api/createunterweisung', async (req, res) => {
@@ -449,12 +477,13 @@ app.post('/api/createunterweisung', async (req, res) => {
     try {
         let result = await DatabaseQueries.executeQuery("INSERT INTO UNTERWEISUNG (UNTERWEISUNGSID, MITARBEITERID, UNTERWEISUNGSNAME) \
         VALUES (:UNTERWEISUNGSID,:MITARBEITERID,:UNTERWEISUNGSNAME)",
-            {UNTERWEISUNGSID:unterweisung.UNTERWEISUNGSID,MITARBEITERID: unterweisung.MITARBEITERID,UNTERWEISUNGSNAME: unterweisung.UNTERWEISUNGSNAME});
+            { UNTERWEISUNGSID: unterweisung.UNTERWEISUNGSID, MITARBEITERID: unterweisung.MITARBEITERID, UNTERWEISUNGSNAME: unterweisung.UNTERWEISUNGSNAME });
         res.status(200).json({ success: true });
     } catch (err) {
         console.log(err);
         res.status(500).json({ success: false });
     }
+    apiCalls++;
 });
 
 app.delete('/api/deleteunterweisung', async (req, res) => {
@@ -467,8 +496,215 @@ app.delete('/api/deleteunterweisung', async (req, res) => {
         console.log(err);
         res.status(500).json({ success: false });
     }
-
+    apiCalls++;
 });
+
+app.get('/api/apicalls', async (req, res) => {
+        try {
+            res.status(200).send(apiCalls);
+        } catch (err) {
+            console.log(err);
+            res.status(500).json({ success: false });
+        }
+ 
+    apiCalls++;
+});
+
+//---------------------------------Views---------------------------------
+
+app.get('/api/wagen_verfuegbar', async (req, res) => {
+    if (Object.keys(req.query).length === 0) {
+        try {
+            let result = await DatabaseQueries.executeQuery("SELECT * FROM wagen_verfuegbar", {});
+            if(result === undefined) {
+                res.status(500).send("SQL Query Error");
+            } else {
+                res.status(200).json(result.rows);
+            }
+        } catch (err) {
+            console.log(err);
+            res.status(500).json({ success: false });
+        }
+    }else if(req.query.kennzeichen != undefined){
+        try {
+            let result = await DatabaseQueries.executeQuery("SELECT * FROM wagen_verfuegbar WHERE KENNZEICHEN = :KENNZEICHEN", {KENNZEICHEN: req.query.kennzeichen});
+            if(result === undefined) {
+                res.status(500).send("SQL Query Error");
+            } else {
+                res.status(200).json(result.rows);
+            }
+        } catch (err) {
+            console.log(err);
+            res.status(500).json({ success: false });
+        }
+    }else if(req.query.datum != null){
+        try {
+            let result = await DatabaseQueries.executeQuery("SELECT * FROM wagen_verfuegbar WHERE DATUM = :DATUM", {DATUM: req.query.datum});
+            if(result === undefined) {
+                res.status(500).send("SQL Query Error");
+            } else {
+                res.status(200).json(result.rows);
+            }
+        } catch (err) {
+            console.log(err);
+            res.status(500).json({ success: false });
+        }
+    } else {
+        console.log(req.query);
+        res.status(404).json([]);
+    }
+    apiCalls++;
+});
+
+app.get('/api/auftraege_ohne_Rechnung', async (req, res) => {
+    if (Object.keys(req.query).length === 0) {
+        try {
+            let result = await DatabaseQueries.executeQuery("SELECT * FROM auftraege_ohne_Rechnung", {});
+            if(result === undefined) {
+                res.status(500).send("SQL Query Error");
+            } else {
+                res.status(200).json(result.rows);
+            }
+        } catch (err) {
+            console.log(err);
+            res.status(500).json({ success: false });
+        }
+    } else {
+        console.log(req.query);
+        res.status(404).json([]);
+    }
+    apiCalls++;
+});
+
+app.get('/api/mitarbeiter_auftragsdatum', async (req, res) => {
+    if (Object.keys(req.query).length === 0) {
+        try {
+            let result = await DatabaseQueries.executeQuery("SELECT * FROM mitarbeiter_auftragsdatum", {});
+            res.status(200).json(result?.rows);
+        } catch (err) {
+            console.log(err);
+            res.status(500).json({ success: false });
+        }
+    } else {
+        console.log(req.query);
+        res.status(404).json([]);
+    }
+    apiCalls++;
+});
+
+app.get('/api/rechnung_summe', async (req, res) => {
+    if (Object.keys(req.query).length === 0) {
+        try {
+            let result = await DatabaseQueries.executeQuery("SELECT * FROM rechnung_summe", {});
+            res.status(200).json(result?.rows);
+        } catch (err) {
+            console.log(err);
+            res.status(500).json({ success: false });
+        }
+    } else {
+        console.log(req.query);
+        res.status(404).json([]);
+    }
+    apiCalls++;
+});
+
+app.get('/api/materialien_verbrauch_monat', async (req, res) => {
+    if (Object.keys(req.query).length === 0) {
+        try {
+            let result = await DatabaseQueries.executeQuery("SELECT * FROM materialien_verbrauch_monat", {});
+            res.status(200).json(result?.rows);
+        } catch (err) {
+            console.log(err);
+            res.status(500).json({ success: false });
+        }
+    } else {
+        console.log(req.query);
+        res.status(404).json([]);
+    }
+    apiCalls++;
+});
+
+app.get('/api/kunden_rabatt_rechnung', async (req, res) => {
+    if (Object.keys(req.query).length === 0) {
+        try {
+            let result = await DatabaseQueries.executeQuery("SELECT * FROM kunden_rabatt_rechnung", {});
+            res.status(200).json(result?.rows);
+        } catch (err) {
+            console.log(err);
+            res.status(500).json({ success: false });
+        }
+    } else {
+        console.log(req.query);
+        res.status(404).json([]);
+    }
+    apiCalls++;
+});
+
+app.get('/api/mitarbeiter_lager_fehlende_menge', async (req, res) => {
+    if (Object.keys(req.query).length === 0) {
+        try {
+            let result = await DatabaseQueries.executeQuery("SELECT * FROM mitarbeiter_lager_fehlende_menge", {});
+            res.status(200).json(result?.rows);
+        } catch (err) {
+            console.log(err);
+            res.status(500).json({ success: false });
+        }
+    } else {
+        console.log(req.query);
+        res.status(404).json([]);
+    }
+    apiCalls++;
+});
+
+app.get('/api/auftrag_invalid_material', async (req, res) => {
+    if (Object.keys(req.query).length === 0) {
+        try {
+            let result = await DatabaseQueries.executeQuery("SELECT * FROM auftrag_invalid_material", {});
+            res.status(200).json(result?.rows);
+        } catch (err) {
+            console.log(err);
+            res.status(500).json({ success: false });
+        }
+    } else {
+        console.log(req.query);
+        res.status(404).json([]);
+    }
+    apiCalls++;
+});
+
+app.get('/api/firmenwagen_belegt', async (req, res) => {
+    if (Object.keys(req.query).length === 0) {
+        try {
+            let result = await DatabaseQueries.executeQuery("SELECT * FROM firmenwagen_belegt", {});
+            res.status(200).json(result?.rows);
+        } catch (err) {
+            console.log(err);
+            res.status(500).json({ success: false });
+        }
+    } else {
+        console.log(req.query);
+        res.status(404).json([]);
+    }
+    apiCalls++;
+});
+
+app.get('/api/firma_stats', async (req, res) => {
+    if (Object.keys(req.query).length === 0) {
+        try {
+            let result = await DatabaseQueries.executeQuery("SELECT * FROM firma_stats", {});
+            res.status(200).json(result?.rows);
+        } catch (err) {
+            console.log(err);
+            res.status(500).json({ success: false });
+        }
+    } else {
+        console.log(req.query);
+        res.status(404).json([]);
+    }
+    apiCalls++;
+});
+
+
 
 
 
