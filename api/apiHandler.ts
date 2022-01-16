@@ -82,7 +82,7 @@ app.get('/api/kunden', async (req, res) => {
     apiCalls++;
 });
 
-app.post('/api/editkundenrabbat', async (req, res) => {
+app.post('/api/editkundenrabatt', async (req, res) => {
     let kundeid = req.body.KUNDENID;
     let rabatt = req.body.KUNDENRABATT;
     try {
@@ -90,7 +90,7 @@ app.post('/api/editkundenrabbat', async (req, res) => {
             let result = await DatabaseQueries.executeQuery("UPDATE KUNDEN SET KUNDENRABATT = :KUNDENRABATT WHERE KUNDENID = :KUNDENID",
                 { KUNDENID: kundeid, KUNDENRABATT: rabatt });
             if (result?.rowsAffected == 0 || result?.rowsAffected == undefined) {
-                res.status(404).json({ success: false });
+                res.status(400).json({ success: false });
             } else {
                 res.status(200).json({ success: true });
             }
