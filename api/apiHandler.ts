@@ -22,7 +22,9 @@ app.get('/api/', async (req, res) => {
 
 app.get('/api/auftraege', async (req, res) => {
     let result = await DatabaseQueries.executeQuery("SELECT * FROM AUFTRAEGE");
-    res.json(result?.rows);
+    let array: any[][] = [[]];
+        array[0].push((result?.metaData as unknown[]).map(x => (x as any).name));
+        res.status(200).json(array[0].concat(result?.rows));
     apiCalls++;
 });
 
