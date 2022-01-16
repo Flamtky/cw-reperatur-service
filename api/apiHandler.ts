@@ -363,7 +363,7 @@ app.post('/api/createlager', async (req, res) => {
     try {
         let result = await DatabaseQueries.executeQuery("INSERT INTO LAGER (LAGERID, FIRMENID, ARBEITSBEREICH) \
         VALUES (:LAGERID,:FIRMENID,:ARBEITSBEREICH)",
-            { LAGERID: lager.LAEGERID, FIRMENID: lager.FIRMENID, ARBEITSBEREICH: lager.ARBEITSBEREICH });
+            { LAGERID: lager.LAGERID, FIRMENID: lager.FIRMENID, ARBEITSBEREICH: lager.ARBEITSBEREICH });
         res.status(200).json({ success: true });
     } catch (err) {
         console.log(err);
