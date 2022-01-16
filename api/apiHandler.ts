@@ -551,7 +551,7 @@ app.get('/api/apicalls', async (req, res) => {
 //---------------------------------Views---------------------------------
 
 app.get('/api/wagen_verfuegbar', async (req, res) => {
-    if (Object.keys(req.query).length === 0) {
+    if (Object.keys(req.query).length !== 0) {
         try {
             let result = await DatabaseQueries.executeQuery("SELECT * FROM wagen_verfuegbar", {});
             if (result === undefined) {
@@ -595,7 +595,7 @@ app.get('/api/wagen_verfuegbar', async (req, res) => {
 });
 
 app.get('/api/auftraege_ohne_Rechnung', async (req, res) => {
-    if (Object.keys(req.query).length === 0) {
+    if (Object.keys(req.query).length !== 0) {
         try {
             let result = await DatabaseQueries.executeQuery("SELECT * FROM auftraege_ohne_Rechnung", {});
             if (result === undefined) {
@@ -615,7 +615,7 @@ app.get('/api/auftraege_ohne_Rechnung', async (req, res) => {
 });
 
 app.get('/api/mitarbeiter_auftragsdatum', async (req, res) => {
-    if (Object.keys(req.query).length === 0) {
+    if (Object.keys(req.query).length !== 0) {
         try {
             let result = await DatabaseQueries.executeQuery("SELECT * FROM mitarbeiter_auftragsdatum", {});
             let array: any[][] = [[]];
@@ -633,7 +633,7 @@ app.get('/api/mitarbeiter_auftragsdatum', async (req, res) => {
 });
 
 app.get('/api/rechnung_summe', async (req, res) => {
-    if (Object.keys(req.query).length === 0) {
+    if (Object.keys(req.query).length !== 0) {
         try {
             let result = await DatabaseQueries.executeQuery("SELECT * FROM rechnung_summe", {});
             let array: any[][] = [[]];
@@ -651,7 +651,7 @@ app.get('/api/rechnung_summe', async (req, res) => {
 });
 
 app.get('/api/materialien_verbrauch_monat', async (req, res) => {
-    if (Object.keys(req.query).length === 0) {
+    if (Object.keys(req.query).length !== 0) {
         try {
             let result = await DatabaseQueries.executeQuery("SELECT * FROM materialien_verbrauch_monat", {});
             let array: any[][] = [[]];
@@ -669,7 +669,7 @@ app.get('/api/materialien_verbrauch_monat', async (req, res) => {
 });
 
 app.get('/api/kunden_rabatt_rechnung', async (req, res) => {
-    if (Object.keys(req.query).length === 0) {
+    if (Object.keys(req.query).length !== 0) {
         try {
             let result = await DatabaseQueries.executeQuery("SELECT * FROM kunden_rabatt_rechnung", {});
             let array: any[][] = [[]];
@@ -687,7 +687,7 @@ app.get('/api/kunden_rabatt_rechnung', async (req, res) => {
 });
 
 app.get('/api/mitarbeiter_lager_fehlende_menge', async (req, res) => {
-    if (Object.keys(req.query).length === 0) {
+    if (Object.keys(req.query).length !== 0) {
         try {
             let result = await DatabaseQueries.executeQuery("SELECT * FROM mitarbeiter_lager_fehlende_menge", {});
             let array: any[][] = [[]];
@@ -705,7 +705,7 @@ app.get('/api/mitarbeiter_lager_fehlende_menge', async (req, res) => {
 });
 
 app.get('/api/auftrag_invalid_material', async (req, res) => {
-    if (Object.keys(req.query).length === 0) {
+    if (Object.keys(req.query).length !== 0) {
         try {
             let result = await DatabaseQueries.executeQuery("SELECT * FROM auftrag_invalid_material", {});
             let array: any[][] = [[]];
@@ -723,7 +723,7 @@ app.get('/api/auftrag_invalid_material', async (req, res) => {
 });
 
 app.get('/api/firmenwagen_belegt', async (req, res) => {
-    if (Object.keys(req.query).length === 0) {
+    if (Object.keys(req.query).length !== 0) {
         try {
             let result = await DatabaseQueries.executeQuery("SELECT * FROM firmenwagen_belegt", {});
             let array: any[][] = [[]];
@@ -741,7 +741,7 @@ app.get('/api/firmenwagen_belegt', async (req, res) => {
 });
 
 app.get('/api/firma_stats', async (req, res) => {
-    if (Object.keys(req.query).length === 0) {
+    if (Object.keys(req.query).length !== 0) {
         try {
             let result = await DatabaseQueries.executeQuery("SELECT * FROM firma_stats", {});
             let array: any[][] = [[]];
