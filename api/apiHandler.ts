@@ -1134,6 +1134,42 @@ app.get('/api/mitarbeiterauftraege', async (req, res) => {
     apiCalls++;
 });
 
+app.get('/api/mitarbeiterauftraegkosten', async (req, res) => {
+    if (Object.keys(req.query).length === 1 && req.query._ != undefined) {
+        try {
+            let result = await DatabaseQueries.executeQuery("SELECT * FROM MITARBEITER_KOSTEN_AUFTRAG", {});
+            let array: any[][] = [[]];
+            array[0].push((result?.metaData as unknown[]).map(x => (x as any).name));
+            res.status(200).json(array[0].concat(result?.rows));
+        } catch (err) {
+            console.log(err);
+            res.status(500).json({ success: false });
+        }
+    }else {
+        console.log(req.query);
+        res.status(404).json({ success: false });
+    }
+    apiCalls++;
+});
+
+app.get('/api/kundenauftragsanzahl', async (req, res) => {
+    if (Object.keys(req.query).length === 1 && req.query._ != undefined) {
+        try {
+            let result = await DatabaseQueries.executeQuery("SELECT * FROM KUNDEN_AUFTRAGSANZAHL", {});
+            let array: any[][] = [[]];
+            array[0].push((result?.metaData as unknown[]).map(x => (x as any).name));
+            res.status(200).json(array[0].concat(result?.rows));
+        } catch (err) {
+            console.log(err);
+            res.status(500).json({ success: false });
+        }
+    }else {
+        console.log(req.query);
+        res.status(404).json({ success: false });
+    }
+    apiCalls++;
+});
+
 
 
 
