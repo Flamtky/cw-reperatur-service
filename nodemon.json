@@ -1,6 +1,6 @@
 {
-    "watch": ["src"],
+    "watch": ["api"],
     "ext": "ts,json",
-    "ignore": ["src/**/*.spec.ts"],
+    "ignore": ["api/**/*.spec.ts"],
     "exec": "ts-node api/apiHandler.ts"
 }
