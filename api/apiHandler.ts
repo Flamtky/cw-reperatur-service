@@ -138,7 +138,7 @@ app.get('/api/mitarbeiter', async (req, res) => {
             array[0].push((result?.metaData as unknown[]).map(x => (x as any).name));
             res.status(200).json(array[0].concat(result?.rows));
         } else if (req.query.MITARBEITERID != undefined) {
-            let result = await DatabaseQueries.executeQuery("SELECT * FROM MITARBEITER WHERE MITARBEITERID = :MITARBEITERID", { KUNDENID: req.query.MITARBEITERID });
+            let result = await DatabaseQueries.executeQuery("SELECT * FROM MITARBEITER WHERE MITARBEITERID = :MITARBEITERID", { MITARBEITERID: req.query.MITARBEITERID });
             let array: any[][] = [[]];
             array[0].push((result?.metaData as unknown[]).map(x => (x as any).name));
             res.status(200).json(array[0].concat(result?.rows));
@@ -467,10 +467,17 @@ app.delete('/api/deletelager', async (req, res) => {
 
 app.get('/api/materialien', async (req, res) => {
     try {
-        let result = await DatabaseQueries.executeQuery("SELECT * FROM MATERIALIEN", {});
-        let array: any[][] = [[]];
-        array[0].push((result?.metaData as unknown[]).map(x => (x as any).name));
-        res.status(200).json(array[0].concat(result?.rows));
+        if (Object.keys(req.query).length === 1 && req.query._ != undefined) {
+            let result = await DatabaseQueries.executeQuery("SELECT * FROM MATERIALIEN", {});
+            let array: any[][] = [[]];
+            array[0].push((result?.metaData as unknown[]).map(x => (x as any).name));
+            res.status(200).json(array[0].concat(result?.rows));
+        } else if (req.query.ARTIKELNUMMER != undefined) {
+            let result = await DatabaseQueries.executeQuery("SELECT * FROM MATERIALIEN WHERE ARTIKELNUMMER = :ARTIKELNUMMER", { ARTIKELNUMMER: req.query.ARTIKELNUMMER });
+            let array: any[][] = [[]];
+            array[0].push((result?.metaData as unknown[]).map(x => (x as any).name));
+            res.status(200).json(array[0].concat(result?.rows));
+        }
     } catch (err) {
         console.log(err);
         res.status(500).json({ success: false });
@@ -843,6 +850,62 @@ app.get('/api/firma_stats', async (req, res) => {
     }
     apiCalls++;
 });
+
+app.get('/api/allematerialien', async (req, res) => {
+    if (Object.keys(req.query).length === 1 && req.query._ != undefined) {
+        try {
+            let result = await DatabaseQueries.executeQuery("SELECT * FROM ALLE_MATERIALIEN", {});
+            let array: any[][] = [[]];
+            array[0].push((result?.metaData as unknown[]).map(x => (x as any).name));
+            res.status(200).json(array[0].concat(result?.rows));
+        } catch (err) {
+            console.log(err);
+            res.status(500).json({ success: false });
+        }
+    } else {
+        console.log(req.query);
+        res.status(404).json({ success: false });
+    }
+    apiCalls++;
+});
+
+app.get('/api/geringerbestand', async (req, res) => {
+    if (Object.keys(req.query).length === 1 && req.query._ != undefined) {
+        try {
+            let result = await DatabaseQueries.executeQuery("SELECT * FROM MATERIAL_UNTER_MINDESTBESTAND", {});
+            let array: any[][] = [[]];
+            array[0].push((result?.metaData as unknown[]).map(x => (x as any).name));
+            res.status(200).json(array[0].concat(result?.rows));
+        } catch (err) {
+            console.log(err);
+            res.status(500).json({ success: false });
+        }
+    } else {
+        console.log(req.query);
+        res.status(404).json({ success: false });
+    }
+    apiCalls++;
+});
+
+app.get('/api/materialpreisaenderungen', async (req, res) => {
+    if (Object.keys(req.query).length === 1 && req.query._ != undefined) {
+        try {
+            let result = await DatabaseQueries.executeQuery("SELECT * FROM MATERIALIEN_PREISAENDERUNGEN ", {});
+            let array: any[][] = [[]];
+            array[0].push((result?.metaData as unknown[]).map(x => (x as any).name));
+            res.status(200).json(array[0].concat(result?.rows));
+        } catch (err) {
+            console.log(err);
+            res.status(500).json({ success: false });
+        }
+    } else {
+        console.log(req.query);
+        res.status(404).json({ success: false });
+    }
+    apiCalls++;
+});
+
+
 
 
 
