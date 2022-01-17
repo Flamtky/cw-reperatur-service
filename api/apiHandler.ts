@@ -64,7 +64,7 @@ app.delete('/api/deleteauftrag', async (req, res) => {
 
 app.get('/api/kunden', async (req, res) => {
     try {
-        if (Object.keys(req.query).length !== 1 && req.query._ != undefined) {
+        if (Object.keys(req.query).length <= 1 && req.query._ != undefined) {
             let result = await DatabaseQueries.executeQuery("SELECT * FROM KUNDEN", {});
             let array: any[][] = [[]];
             array[0].push((result?.metaData as unknown[]).map(x => (x as any).name));
