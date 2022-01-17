@@ -873,7 +873,7 @@ app.get('/api/allematerialien', async (req, res) => {
 app.get('/api/geringerbestand', async (req, res) => {
     if (Object.keys(req.query).length === 1 && req.query._ != undefined) {
         try {
-            let result = await DatabaseQueries.executeQuery("SELECT * FROM MATERIAL_UNTER_MINDESTBESTAND", {});
+            let result = await DatabaseQueries.executeQuery("SELECT * FROM MATERIALIEN_UNTER_MINDESTBESTAND", {});
             let array: any[][] = [[]];
             array[0].push((result?.metaData as unknown[]).map(x => (x as any).name));
             res.status(200).json(array[0].concat(result?.rows));
