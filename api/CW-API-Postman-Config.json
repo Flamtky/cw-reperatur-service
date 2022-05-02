@@ -1,0 +1,674 @@
+{
+	"info": {
+		"_postman_id": "2d07ec6a-8412-45c0-af73-5d0bfc03e277",
+		"name": "CW-Schnittstellen",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Aufträge",
+			"item": [
+				{
+					"name": "Create Auftrag",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "AUFTRAGSNUMMER",
+									"value": "1337420",
+									"type": "text"
+								},
+								{
+									"key": "KUNDENID",
+									"value": "4201337",
+									"type": "text"
+								},
+								{
+									"key": "PLZ",
+									"value": "32423",
+									"type": "text"
+								},
+								{
+									"key": "AUFTRAGSSTRASSE",
+									"value": "Königstraße",
+									"type": "text"
+								},
+								{
+									"key": "AUFTRAGSHAUSNUMMER",
+									"value": "133",
+									"type": "text"
+								},
+								{
+									"key": "MITARBEITERARBEITSZEIT",
+									"value": "2",
+									"type": "text"
+								},
+								{
+									"key": "ARTDESAUFTRAGS",
+									"value": "Reperatur",
+									"type": "text"
+								},
+								{
+									"key": "AUFTRAGSDATUM",
+									"value": "01/10/2023 08-00-00",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "127.0.0.1:8080/api/createauftrag",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"createauftrag"
+							],
+							"query": [
+								{
+									"key": "test",
+									"value": "values",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Aufträge",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "127.0.0.1:8080/api/auftraege",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"auftraege"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Auftrag",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "AUFTRAGSNUMMER",
+									"value": "6",
+									"type": "default"
+								}
+							]
+						},
+						"url": {
+							"raw": "127.0.0.1:8080/api/deleteauftrag",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"deleteauftrag"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Kunden",
+			"item": [
+				{
+					"name": "Create Kunde",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "KUNDENID",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "PLZ",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "KUNDENNAME",
+									"value": " ",
+									"type": "text"
+								},
+								{
+									"key": "KUNDENSTRASSE",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "KUNDENHAUSNUMMER",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "KUNDENRABATT",
+									"value": "",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://127.0.0.1:8080/api/createkunde",
+							"protocol": "https",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"createkunde"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Kunden",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "127.0.0.1:8080/api/kunden/",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"kunden",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Kunde",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "KUNDENID",
+									"value": "1",
+									"type": "default"
+								}
+							]
+						},
+						"url": {
+							"raw": "127.0.0.1:8080/api/deletekunde",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"deletekunde"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Lieferrranten",
+			"item": [
+				{
+					"name": "Create Lieferrant",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "LIEFERRANTENNR",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "LIEFERRANTENNAME",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "URL",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "EMAIL",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "BESTELLRABATT",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "LIEFERRANTENTELEFONNUMMER",
+									"value": "",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://127.0.0.1:8080/api/createlieferrant",
+							"protocol": "https",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"createlieferrant"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Lieferrant",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://127.0.0.1:8080/api/lieferranten",
+							"protocol": "https",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"lieferranten"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Lieferrant",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "LIEFERRANTENNR",
+									"value": "",
+									"type": "default"
+								}
+							]
+						},
+						"url": {
+							"raw": "127.0.0.1:8080/api/deletelieferrant",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"deletelieferrant"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Mitarbeiter",
+			"item": [
+				{
+					"name": "Create Mitarbeiter",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "MITARBEITERID",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "FIRMENID",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "VORNAME",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "NACHNAMEN",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "GEBURTSDATUM",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "STUNDENLOHN",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "IBAN",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "VERSICHERTENNUMMER",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "URLAUBSTAGE",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "ABTEILUNG",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "EINSTELLUNGSJAHR",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "AZUBI",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "FÜHRERSCHEIN",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "TELEFON",
+									"value": "",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://127.0.0.1:8080/api/createmitarbeiter",
+							"protocol": "https",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"createmitarbeiter"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Mitarbeiter",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "127.0.0.1:8080/api/mitarbeiter",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"mitarbeiter"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Mitarbeiter",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "MITARBEITERID",
+									"value": "1",
+									"type": "default"
+								}
+							]
+						},
+						"url": {
+							"raw": "127.0.0.1:8080/api/deletemitarbeiter",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"deletemitarbeiter"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Rechnungen",
+			"item": [
+				{
+					"name": "Create Rechnung",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "RECHNUNGSNR",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "AUFTRAGSNUMMER",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "KUNDENID",
+									"value": " ",
+									"type": "text"
+								},
+								{
+									"key": "SUMME",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "RECHNUNGSDATUM",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "ZAHLUNGSART",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "RABATT",
+									"value": " ",
+									"type": "text"
+								},
+								{
+									"key": "LAUFZEIT",
+									"value": " ",
+									"type": "text"
+								},
+								{
+									"key": "AUFPREIS",
+									"value": "",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://127.0.0.1:8080/api/createrechnung",
+							"protocol": "https",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"createrechnung"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Rechnungen",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://127.0.0.1:8080/api/rechnungen",
+							"protocol": "https",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"rechnungen"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Rechnung",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "RECHNUNGSNR",
+									"value": "",
+									"type": "default"
+								}
+							]
+						},
+						"url": {
+							"raw": "127.0.0.1:8080/api/deleterechnung",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"deleterechnung"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "Authtoken",
+			"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwicGFzc3dvcmQiOiIkMmIkMTAkb1RXNlpUenZ1RmZ0OGJ1Y09YYzRsLk1GOE4xVWxLblVaL1dDdnZvVkNhcWMzWmwxYi5XRGUiLCJpYXQiOjE2Mzg1MjE5NzgsImV4cCI6MTYzODUyMjAzOH0.dahILedCdcgHZFUmN1C4vzCE9Oj4y7ETcFfyAlwYrc8"
+		}
+	]
+}
